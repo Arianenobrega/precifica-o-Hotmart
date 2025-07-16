@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Precificação - Hotmart</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        
+        .section h2 {
+            color: #34495e;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .input-section {
+            background-color: #fff9e6;
+            border-color: #f39c12;
+        }
+        
+        .calculation-section {
+            background-color: #e8f5e8;
+            border-color: #27ae60;
+        }
+        
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .input-row {
+            background-color: #ffeb3b;
+            border: 1px solid #f57c00;
+        }
+        
+        .calculation-row {
+            background-color: #4caf50;
+            border: 1px solid #2e7d32;
+            color: white;
+        }
+        
+        .calculation-row label {
+            color: white;
+            font-weight: bold;
+        }
+        
+        label {
+            min-width: 200px;
+            font-weight: 600;
+            display: block;
+        }
+        
+        input[type="number"] {
+            width: 150px;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .result-display {
+            width: 150px;
+            padding: 8px 12px;
+            background-color: rgba(255,255,255,0.9);
+            border: 2px solid #fff;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+        }
+        
+        .currency {
+            margin-left: 10px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .percentage {
+            margin-left: 10px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .legend {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            border-radius: 3px;
+            vertical-align: middle;
+        }
+        
+        .yellow-legend { background-color: #ffeb3b; border: 1px solid #f57c00; }
+        .green-legend { background-color: #4caf50; border: 1px solid #2e7d32; }
+        
+        .summary {
+            background-color: #e3f2fd;
+            border: 2px solid #1976d2;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .summary h3 {
+            color: #1976d2;
+            margin-top: 0;
+            text-align: center;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .final-result {
+            background-color: #1976d2;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧮 Calculadora de Precificação - Hotmart</h1>
+        
+        <div class="section input-section">
+            <h2>🧩 SEÇÃO 1 - DEFINIÇÕES INICIAIS</h2>
+            <p><strong>Preencha os campos abaixo com seus dados:</strong></p>
+            
+            <div class="form-row input-row">
+                <label>Preço de Venda:</label>
+                <input type="number" id="precoVenda" step="0.01" value="100" min="0">
+                <span class="currency">R$</span>
+            </div>
+            
+            <div class="form-row input-row">
+                <label>Comissão do Afiliado:</label>
+                <input type="number" id="comissaoAfiliado" step="0.1" value="50" min="0" max="100">
+                <span class="percentage">%</span>
+            </div>
+            
+            <div class="form-row input-row">
+                <label>Número de Parcelas:</label>
+                <select id="numeroParcelas" style="width: 150px; padding: 8px 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 16px; font-weight: bold;">
+                    <option value="1">À vista (1x)</option>
+                    <option value="2">2x</option>
+                    <option value="3">3x</option>
+                    <option value="4">4x</option>
+                    <option value="5">5x</option>
+                    <option value="6" selected>6x</option>
+                    <option value="7">7x</option>
+                    <option value="8">8x</option>
+                    <option value="9">9x</option>
+                    <option value="10">10x</option>
+                    <option value="11">11x</option>
+                    <option value="12">12x</option>
+                </select>
+            </div>
+            
+            <div class="form-row input-row">
+                <label>Taxa de Juros Mensal Hotmart:</label>
+                <input type="number" id="taxaJurosMensal" step="0.1" value="3.49" min="0" max="20">
+                <span class="percentage">% a.m.</span>
+            </div>
+            
+            <div class="form-row input-row">
+                <label>Player de Vídeo:</label>
+                <input type="number" id="playerVideo" step="0.01" value="2.49" min="0">
+                <span class="currency">R$</span>
+            </div>
+            
+            <div class="form-row input-row">
+                <label>Taxa de Saque por venda:</label>
+                <input type="number" id="taxaSaque" step="0.01" value="1.99" min="0">
+                <span class="currency">R$</span>
+            </div>
+            
+            <div class="form-row input-row">
+                <label>Tributação Simples Nacional:</label>
+                <input type="number" id="tributacao" step="0.1" value="6" min="0" max="100">
+                <span class="percentage">%</span>
+            </div>
+            
+            <div class="form-row input-row">
+                <label>Custos por Venda:</label>
+                <input type="number" id="custosPorVenda" step="0.01" value="5.00" min="0">
+                <span class="currency">R$</span>
+            </div>
+        </div>
+        
+        <div class="section calculation-section">
+            <h2>📊 SEÇÃO 2 - CÁLCULOS AUTOMÁTICOS</h2>
+            <p><strong>Valores calculados automaticamente:</strong></p>
+            
+            <div class="form-row calculation-row">
+                <label>1. Valor Total com Juros:</label>
+                <div class="result-display" id="valorComJuros">R$ 0,00</div>
+            </div>
+            
+            <div class="form-row calculation-row">
+                <label>2. Valor dos Juros (fica p/ Hotmart):</label>
+                <div class="result-display" id="valorJuros">R$ 0,00</div>
+            </div>
+            
+            <div class="form-row calculation-row">
+                <label>3. Valor da Comissão:</label>
+                <div class="result-display" id="valorComissao">R$ 0,00</div>
+            </div>
+            
+            <div class="form-row calculation-row">
+                <label>4. Taxa da Hotmart:</label>
+                <div class="result-display" id="taxaHotmart">R$ 0,00</div>
+            </div>
+            
+            <div class="form-row calculation-row">
+                <label>5. Tributo (sobre valor c/ juros):</label>
+                <div class="result-display" id="tributo">R$ 0,00</div>
+            </div>
+            
+            <div class="form-row calculation-row">
+                <label>6. Receita Líquida:</label>
+                <div class="result-display" id="receitaLiquida">R$ 0,00</div>
+            </div>
+            
+            <div class="form-row calculation-row">
+                <label>7. Lucro Final:</label>
+                <div class="result-display" id="lucroFinal">R$ 0,00</div>
+            </div>
+            
+            <div class="form-row calculation-row">
+                <label>8. Margem Real:</label>
+                <div class="result-display" id="margemReal">0,00%</div>
+            </div>
+        </div>
+        
+        <div class="summary">
+            <h3>📋 RESUMO DO NEGÓCIO</h3>
+            <div class="summary-item">
+                <span>Preço de Venda:</span>
+                <span id="resumoPreco">R$ 0,00</span>
+            </div>
+            <div class="summary-item">
+                <span>Total de Descontos:</span>
+                <span id="resumoDescontos">R$ 0,00</span>
+            </div>
+            <div class="summary-item">
+                <span>Receita Líquida:</span>
+                <span id="resumoReceita">R$ 0,00</span>
+            </div>
+            <div class="summary-item">
+                <span>Custos Operacionais:</span>
+                <span id="resumoCustos">R$ 0,00</span>
+            </div>
+            
+            <div class="final-result">
+                <div>💰 LUCRO FINAL POR VENDA: <span id="resumoLucro">R$ 0,00</span></div>
+                <div>📊 MARGEM REAL: <span id="resumoMargem">0,00%</span></div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <h4>📌 Legenda:</h4>
+            <div class="legend-item">
+                <span class="legend-color yellow-legend"></span>
+                <strong>Amarelo:</strong> Campos para preenchimento manual
+            </div>
+            <div class="legend-item">
+                <span class="legend-color green-legend"></span>
+                <strong>Verde:</strong> Cálculos automáticos
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(value);
+        }
+
+        function formatPercentage(value) {
+            return value.toFixed(2) + '%';
+        }
+
+        function calcular() {
+            // Pegar valores dos inputs
+            const precoVenda = parseFloat(document.getElementById('precoVenda').value) || 0;
+            const comissaoAfiliado = parseFloat(document.getElementById('comissaoAfiliado').value) || 0;
+            const numeroParcelas = parseInt(document.getElementById('numeroParcelas').value) || 1;
+            const taxaJurosMensal = parseFloat(document.getElementById('taxaJurosMensal').value) || 0;
+            const playerVideo = parseFloat(document.getElementById('playerVideo').value) || 0;
+            const taxaSaque = parseFloat(document.getElementById('taxaSaque').value) || 0;
+            const tributacao = parseFloat(document.getElementById('tributacao').value) || 0;
+            const custosPorVenda = parseFloat(document.getElementById('custosPorVenda').value) || 0;
+
+            // Cálculo do valor com juros (Price System - Tabela Price)
+            let valorComJuros, valorJuros;
+            
+            if (numeroParcelas === 1) {
+                // À vista
+                valorComJuros = precoVenda;
+                valorJuros = 0;
+            } else {
+                // Parcelado com juros
+                const taxaJurosDecimal = taxaJurosMensal / 100;
+                const fator = Math.pow(1 + taxaJurosDecimal, numeroParcelas);
+                const coeficiente = (fator * taxaJurosDecimal) / (fator - 1);
+                const valorParcela = precoVenda * coeficiente;
+                valorComJuros = valorParcela * numeroParcelas;
+                valorJuros = valorComJuros - precoVenda;
+            }
+
+            // Cálculos automáticos
+            const valorComissao = precoVenda * comissaoAfiliado / 100; // Comissão sobre valor sem juros
+            const taxaHotmart = precoVenda * 0.099 + 1; // Taxa sobre valor sem juros
+            const tributo = valorComJuros * tributacao / 100; // Tributo sobre valor COM juros
+            
+            const receitaLiquida = precoVenda - valorComissao - taxaHotmart - valorJuros - playerVideo - taxaSaque - tributo;
+            const lucroFinal = receitaLiquida - custosPorVenda;
+            const margemReal = precoVenda > 0 ? (lucroFinal / precoVenda * 100) : 0;
+
+            // Atualizar os campos de resultado
+            document.getElementById('valorComJuros').textContent = formatCurrency(valorComJuros);
+            document.getElementById('valorJuros').textContent = formatCurrency(valorJuros);
+            document.getElementById('valorComissao').textContent = formatCurrency(valorComissao);
+            document.getElementById('taxaHotmart').textContent = formatCurrency(taxaHotmart);
+            document.getElementById('tributo').textContent = formatCurrency(tributo);
+            document.getElementById('receitaLiquida').textContent = formatCurrency(receitaLiquida);
+            document.getElementById('lucroFinal').textContent = formatCurrency(lucroFinal);
+            document.getElementById('margemReal').textContent = formatPercentage(margemReal);
+
+            // Atualizar resumo
+            const totalDescontos = valorComissao + taxaHotmart + valorJuros + playerVideo + taxaSaque + tributo;
+            
+            document.getElementById('resumoPreco').textContent = formatCurrency(precoVenda);
+            document.getElementById('resumoDescontos').textContent = formatCurrency(totalDescontos);
+            document.getElementById('resumoReceita').textContent = formatCurrency(receitaLiquida);
+            document.getElementById('resumoCustos').textContent = formatCurrency(custosPorVenda);
+            document.getElementById('resumoLucro').textContent = formatCurrency(lucroFinal);
+            document.getElementById('resumoMargem').textContent = formatPercentage(margemReal);
+        }
+
+        // Adicionar listeners para todos os inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            const selects = document.querySelectorAll('select');
+            
+            inputs.forEach(input => {
+                input.addEventListener('input', calcular);
+            });
+            
+            selects.forEach(select => {
+                select.addEventListener('change', calcular);
+            });
+            
+            // Calcular valores iniciais
+            calcular();
+        });
+    </script>
+</body>
+</html>
